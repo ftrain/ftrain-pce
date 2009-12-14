@@ -1,0 +1,39 @@
+\documentclass[statementpaper]{memoir} 
+\usepackage[utf8x]{inputenc}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage[urw-garamond]{mathdesign}
+
+\usepackage{helvet}
+%\usepackage{concmath}
+%\usepackage{libertine}
+%\renewcommand*\oldstylenums[1]{{\fontfamily{fxlj}\selectfont #1}}
+
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{lscape}
+\usepackage{url}
+
+\OnehalfSpacing
+%\setstocksize{8.5in}{5.5in}
+\settrims{0pt}{0pt}
+\setlrmarginsandblock{.625in}{.625in}{*} 
+\setulmarginsandblock{1in}{1in}{*} 
+\clubpenalty=10000 
+\widowpenalty=10000 
+\raggedbottom 
+\fussy
+\chapterstyle{dash}
+\newcommand{\brk}{\fancybreak{}}
+\newcommand{\bigbrk}{
+  {
+    \bigskip  
+    \fancybreak{\rule{80pt}{.5pt} } 
+    \bigskip  
+  }
+}
+\makeevenhead{headings}{\sffamily \small \thepage}{}{\sffamily \small \theauthor}
+\makeoddhead{headings}{\sffamily \small \thetitle}{}{\sffamily \small \thepage}
+\checkandfixthelayout 
+
+
+

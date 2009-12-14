@@ -1,0 +1,62 @@
+\documentclass[12pt, twoside, letterpaper]{memoir} 
+\usepackage[utf8x]{inputenc}
+
+\usepackage[T1]{fontenc}
+\usepackage{concmath}
+
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{xcolor}
+
+%\setlrmarginsandblock{1in}{1in}{*}
+\setlrmarginsandblock{1in}{1.5in}{*}
+
+\let\margin\marginpar
+\newcommand\myMargin[1]{
+\margin{
+    \sffamily
+    \SingleSpace
+      \strictpagecheck
+      \checkoddpage
+      \ifoddpage 
+      \begin{flushleft}
+       \textcolor{red}{#1}
+      \end{flushleft}
+      \else
+      \begin{flushright} 
+        \textcolor{red}{#1}
+      \end{flushright} 
+      \fi
+}}
+\renewcommand{\marginpar}[1]{\myMargin{#1}}
+
+\newcommand\direction[1]{
+  \colorbox{black}{\sffamily \scriptsize {\textcolor{white}{#1}}}
+}
+
+\setlength{\marginparwidth}{1.5in}
+\setlength{\marginparsep}{.25in}
+
+%\OnehalfSpace
+\DoubleSpace
+\setsecheadstyle{\center \large}
+\setsubsecheadstyle{\center \large}
+\setsubsubsecheadstyle{\center \normalsize}
+
+\parindent .25in
+\clubpenalty=10000
+\widowpenalty=10000
+\fussy
+
+\chapterstyle{bringhurst}
+\newcommand{\brk}{\fancybreak{}}
+\newcommand{\bigbrk}{
+  {
+    \bigskip  
+    \fancybreak{\rule{80pt}{.5pt} } 
+    \bigskip  
+  }
+}
+
+\makeevenhead{headings}{\sffamily \small \thepage}{}{\sffamily \small \theauthor}
+\makeoddhead{headings}{\sffamily \small \thetitle}{}{\sffamily \small \thepage}
+\checkandfixthelayout 

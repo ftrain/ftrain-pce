@@ -1,0 +1,38 @@
+\documentclass[10pt,letterpaper,twocolumn,landscape,openany,article]{memoir} 
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[urw-garamond]{mathdesign}
+\usepackage{helvet}
+\usepackage[expansion=true,protrusion=true]{microtype}
+\usepackage{lscape}
+\usepackage{url}
+
+\setcolsepandrule{2in}{.5pt} 
+
+\setlrmarginsandblock{1in}{1in}{*} 
+\setulmarginsandblock{1in}{1in}{*} 
+\clubpenalty=10000 
+\widowpenalty=10000 
+\raggedbottom 
+\fussy
+%\chapterstyle{dash}
+\newcommand{\brk}{\fancybreak{}}
+\newcommand{\bigbrk}{
+  {
+    \bigskip  
+    \fancybreak{\rule{80pt}{.5pt} } 
+    \bigskip  
+  }
+}
+\makeevenhead{headings}{\sffamily \small \thepage}{}{\sffamily \small \theauthor}
+\makeoddhead{headings}{\sffamily \small \thetitle}{}{\sffamily \small \thepage}
+\checkandfixthelayout 
+
+%\pagenumbering{gobble}
+%\thispagestyle{empty} 
+%\begin{center}
+%  \vspace*{\fill}
+%  \thetitle 
+%  \vspace*{\fill}
+%\end{center}
+

@@ -1,0 +1,29 @@
+\documentclass[letterpaper]{memoir} 
+\usepackage[utf8x]{inputenc}
+\usepackage{listings}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{lscape}
+\usepackage{url}
+
+\settrims{0pt}{0pt}
+\setlrmarginsandblock{2.5in}{2.5in}{*} 
+\setulmarginsandblock{1in}{1in}{*} 
+\clubpenalty=10000 
+\widowpenalty=10000 
+\raggedbottom 
+\fussy
+\chapterstyle{dash}
+\newcommand{\brk}{\fancybreak{}}
+\newcommand{\bigbrk}{
+  {
+    \bigskip  
+    \fancybreak{\rule{80pt}{.5pt} } 
+    \bigskip  
+  }
+}
+\makeevenhead{headings}{\sffamily \small \thepage}{}{\sffamily \small \theauthor}
+\makeoddhead{headings}{\sffamily \small \thetitle}{}{\sffamily \small \thepage}
+\checkandfixthelayout 
+
+
+
