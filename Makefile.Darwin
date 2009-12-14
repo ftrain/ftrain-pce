@@ -1,0 +1,109 @@
+export TEXMFLOCAL:= /opt/local/share/texmf-local/
+PATH=/opt/local/bin:/opt/local/sbin:/Users/ford/local/bin:/usr/bin:/usr/sbin:/usr/local/bin:/opt/local/virtuoso/bin:/opt/local/apache2/bin:/opt/local/lib/python2.5/site-packages/django/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/local/texlive/2008/bin/universal-darwin/
+PERL=/usr/bin/perl
+TEXBIN=/usr/local/texlive/2008/bin/universal-darwin
+SIMPDFTEX=$(TEXBIN)/simpdftex latex --maxpfb
+PDFLATEX=$(TEXBIN)/pdflatex
+PANDOC=pandoc
+MARKDOWN_BOOK=book.md
+
+LOCAL=/Users/ford/proj/prose/local
+TEMP_OUTPUT=$(LOCAL)/tmp/parsedfile.md
+WIDE=wide
+TEX=tex
+FINAL=final
+READING=reading
+DRAFT=draft
+
+
+all: final draft wide html
+
+preparse:
+	cp $(MARKDOWN_BOOK) $(TEMP_OUTPUT)
+	$(PERL) $(LOCAL)/bin/vars.pl $(TEMP_OUTPUT)
+
+preparse-latex: preparse
+	$(PERL)  $(LOCAL)/bin/to_latex.pl $(TEMP_OUTPUT)
+
+preparse-html: preparse
+	$(PERL)  $(LOCAL)/bin/to_html.pl $(TEMP_OUTPUT)
+
+preparse-rtf: preparse
+	$(PERL)  $(LOCAL)/bin/to_rtf.pl $(TEMP_OUTPUT)
+
+draft: preparse-latex
+	$(PANDOC) --no-wrap -S -f markdown -s -C"$(LOCAL)/lib/headers/$(DRAFT).tex" -o latex $(TEMP_OUTPUT) -o $(DRAFT).tex
+	$(PERL)  $(LOCAL)/bin/to_final.pl $(DRAFT).tex
+	$(PERL)  $(LOCAL)/bin/to_latex.pl $(DRAFT).tex
+	$(PERL)  $(LOCAL)/bin/endumbifyquotes.pl $(DRAFT).tex
+	$(SIMPDFTEX) $(DRAFT).tex
+	open $(DRAFT).pdf
+
+final: preparse-latex
+	$(PANDOC) --no-wrap -S -f markdown -s -C"$(LOCAL)/lib/headers/$(FINAL).tex" -o latex $(TEMP_OUTPUT) -o $(FINAL).tex
+	$(PERL)  $(LOCAL)/bin/to_final.pl $(FINAL).tex
+	$(PERL)  $(LOCAL)/bin/to_latex.pl $(FINAL).tex
+	$(PDFLATEX) $(FINAL).tex
+	open $(FINAL).pdf
+
+tex: preparse-latex
+	$(PANDOC) --no-wrap -S -R -f markdown -s -C"$(LOCAL)/lib/headers/$(TEX).tex" -o latex $(TEMP_OUTPUT) -o $(TEX).tex
+	$(PERL)  $(LOCAL)/bin/to_final.pl $(TEX).tex
+	$(PERL)  $(LOCAL)/bin/to_latex.pl $(TEX).tex
+	$(PDFLATEX) $(TEX).tex
+	open $(TEX).pdf
+
+wide: preparse-latex
+	$(PANDOC) --no-wrap -S -f markdown -s -C"$(LOCAL)/lib/headers/$(WIDE).tex" -o latex $(TEMP_OUTPUT) -o $(WIDE).tex
+	$(PERL)  $(LOCAL)/bin/to_final.pl $(WIDE).tex
+	$(PERL)  $(LOCAL)/bin/to_latex.pl $(WIDE).tex
+	$(PDFLATEX) $(WIDE).tex
+	open $(WIDE).pdf
+
+reading: preparse-latex
+	$(PERL)  $(LOCAL)/bin/wcfn.pl $(TEMP_OUTPUT) > post_wordcount.tmp
+	mv post_wordcount.tmp $(TEMP_OUTPUT)
+	$(PANDOC) --no-wrap -S -f markdown -s -C"$(LOCAL)/lib/headers/$(READING).tex" -o latex $(TEMP_OUTPUT) -o $(READING).tex
+	$(PERL)  $(LOCAL)/bin/to_final.pl $(READING).tex
+	$(PERL)  $(LOCAL)/bin/to_latex_reading.pl $(READING).tex
+	$(PDFLATEX) $(READING).tex
+	open $(READING).pdf
+
+odt: preparse-rtf 
+	$(PANDOC) --no-wrap -f markdown -s -t odt -S -o out.odt $(TEMP_OUTPUT)
+
+rtf: preparse-rtf 
+	$(PANDOC) --no-wrap -f markdown -C"$(LOCAL)/lib/headers/header.rtf" -s -t rtf -S -o book.rtf $(TEMP_OUTPUT)
+	$(PERL)  $(LOCAL)/bin/post_rtf.pl book.rtf
+	open book.rtf
+
+html: preparse-html 
+	$(PANDOC) --no-wrap -f markdown -s -t html -c "css/novel.css" -S --toc -o book.html $(TEMP_OUTPUT)
+	open book.html
+
+man: preparse
+	$(PANDOC) --no-wrap -f markdown -s -t man -S -o novel.1 book.md
+	groff -Tps -man novel.1|ps2pdf - novel_groff.pdf
+#	man -M$MATHPATH:$PWD ./novel.1	
+	open novel_groff.pdf
+
+clean:
+	@rm -f  *.aux \
+		*.dvi \
+		*.groff \
+		*.html \
+		*.idx \
+		*.ind \
+		*.log \
+		*.odt \
+		*.out \
+		*.pdf \
+		*.ps \
+		*.rtf \
+		*.toc \
+		*~ \
+		*.tex \
+		draft.* \
+		final.* \
+		novel.1 \
+		$(TEMP_OUTPUT)

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+pushd . 1>/dev/null
+DIR=$HOME/proj/prose/local/tmp
+
+MDBK="$PWD/$1"
+if test -z "$2"
+then
+    echo "Usage: $0 [markdown file] [output format]";
+    echo "Current formats are: final, draft, wide, reading, odt, rtf, html, man"
+else
+    cd $DIR
+    BOOK_MAKEFILE=../bin/Makefile.`uname`;
+    MARKDOWN_BOOK=$MDBK make -e -f $BOOK_MAKEFILE $2;
+    popd 1>/dev/null
+fi;
+    
