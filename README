@@ -4,3 +4,7 @@ with some dependencies and a few hacks to get it out of markdown into
 formats appropriate for readings, publication, proofing, galleys,
 etc., to help me as a writer visualize and deal with my own stuff.
 
+TODO
+-- Document the document system
+-- Possibly (plausibly) migrate to Python; get away from Makefiles and maybe go for SCons?
+-- Nap
